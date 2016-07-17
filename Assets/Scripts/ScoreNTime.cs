@@ -8,13 +8,29 @@ public class ScoreNTime : MonoBehaviour {
 	public Image ScoreTens;
 	public Image ScoreUnits;
 	public Sprite[] Sprites;
-
+	public GameObject GameOverCam;
+	public GameObject Canvas;
+	public GameObject MainCam;
+	public Text CurrentScore;
+	public Text HighScore;
+	public bool EndGameScene=false;
 	void Start () {
 		UpdateScore (PlayerPrefs.GetInt ("CurrentScore"));
 	}
 	
 	void Update(){
-		UpdateTimeDisplay (Time.timeSinceLevelLoad);
+		
+
+		if(EndGameScene==false){
+			UpdateTimeDisplay (Time.timeSinceLevelLoad);
+
+		if (Time.timeSinceLevelLoad>4){
+			int s = 5 + (PlayerPrefs.GetInt ("CurrentScore")/10);
+			if (Time.timeSinceLevelLoad > s) {
+				LoadGameover ();
+			}
+		}
+	}
 	}
 
 
@@ -40,9 +56,11 @@ public class ScoreNTime : MonoBehaviour {
 	}	
 
 	public void LoadGameover(){
-		
-		PlayerPrefs.SetInt("CurrentScore",0);
-		//LoadOverScene
+		EndGameScene = true;
+		GameOverScore ();
+		Canvas.SetActive (false);
+		GameOverCam.SetActive (true);
+		MainCam.SetActive (false);
 	
 	}
 
@@ -55,5 +73,24 @@ public class ScoreNTime : MonoBehaviour {
 			ScoreUnits.sprite = Sprites [n % 10];
 		}
 	}
+
+public void GameOverScore(){
+		int s;
+		s= PlayerPrefs.GetInt ("CurrentScore");
+		CurrentScore.text = s.ToString ();
+
+		if(s > PlayerPrefs.GetInt("ḦighScore")){
+
+			PlayerPrefs.SetInt ("HighScore", s);
+				
+		}
+
+				HighScore.text=PlayerPrefs.GetInt("HighScore").ToString();
+		PlayerPrefs.SetInt("CurrentScore",0);
+
+	}
+
+
+
 }	
 

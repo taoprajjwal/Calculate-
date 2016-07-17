@@ -137,8 +137,6 @@ public class QuestionHandle : MonoBehaviour {
 		int s = A % B;
 		int UsedNum1=A;
 		int UsedNum2=B;
-		print (B);
-		print (A);
 
 
 		while(s!=0 || UsedNum1==UsedNum2){
